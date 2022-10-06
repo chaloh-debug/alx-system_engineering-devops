@@ -1,2 +1,2 @@
 #!/bin/bash
-chmod -d +x hello 
+find /path/to/base/dir -type d -exec chmod +x

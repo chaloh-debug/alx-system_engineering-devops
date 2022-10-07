@@ -1,2 +1,2 @@
 #!/bin/bash
-file -f School
+file -fl School

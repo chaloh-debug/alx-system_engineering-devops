@@ -1,12 +1,33 @@
 #!/usr/bin/env bash
-#custom nginx configuration
+#config nginx with custom header
 
-sudo apt-get -y update
+sudo apt-get update
 sudo apt-get -y install nginx
-echo "Hello World!" > /var/www/html/index.html
+sudo ufw allow 'Nginx HTTP'
+sudo mkdir -p /var/www/html /var/www/error
+sudo chmod -R 755 /var/www
+echo 'Hello World!' > /var/www/html/index.html
 echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
-rp="\n\tlocation /redirect_me {\n\t\treturn 301 https:www.github.com/chaloh-debug;\n\t}\n"
-rp1="\n\\terror_page 404 /custom_404.html;\n\tlocation = /var/www/html/custom_404.html {\n\t\tinternal;\n\t}"
-rp2="\n\tadd_header X-Served-By \$hostname;"
-sudo sed -i "47i\ $rp@rp1@rp2" /etc/nginx/sites-available/default
-sudo service nginx start
+server_config=\
+"server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        add_header X-Served-By \$hostname;
+        location / {
+                try_files \$uri \$uri/ =404;
+        }
+        if (\$request_filename ~ redirect_me){
+                rewrite ^ https://github.com/chaloh-debug permanent;
+        }
+        error_page 404 /custom_404.html;
+        location = /custom_404.html {
+                internal;
+        }
+}"
+
+echo "$server_config" > /etc/nginx/sites-enabled/default
+sudo service nginx restart
+

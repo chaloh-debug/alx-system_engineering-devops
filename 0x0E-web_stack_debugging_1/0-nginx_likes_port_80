@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# configure nginx to listen to port 80
+
+configuration=\
+"
+server {
+    listen 80 default_server;
+
+    location {
+	root /usr/share/nginx/html;
+	index index.html index.htm;
+    }
+}
+"
+echo "$configuration" >> /etc/nginx/conf.d/default.conf
+nginx -s reload

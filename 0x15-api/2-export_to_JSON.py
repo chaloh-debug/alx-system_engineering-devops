@@ -22,7 +22,8 @@ if __name__ == "__main__":
     tasks = []
 
     for task in data:
-        new_dict = {"task": task.get('title'), "completed": task.get('completed'),
+        new_dict = {"task": task.get('title'),
+                    "completed": task.get('completed'),
                     "username": username}
         tasks.append(new_dict)
 

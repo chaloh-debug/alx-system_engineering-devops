@@ -7,8 +7,12 @@ from sys import argv
 
 
 if __name__ == "__main__":
-    url = 'https://jsonplaceholder.typicode.com/'
 
+    tasks_done = 0
+    total_tasks = 0
+    tasks = []
+
+    url = 'https://jsonplaceholder.typicode.com/'
     user = '{}users/{}'.format(url, argv[1])
     req = requests.get(user)
     data = req.json()
@@ -17,17 +21,17 @@ if __name__ == "__main__":
     todos = '{}todos?userId={}'.format(url, argv[1])
     req = requests.get(todos)
     data = req.json()
-    tasks = []
 
     for task in data:
+        total_tasks += 1
         if task.get('completed') is True:
-            tasks.append(task)
-
+            tasks_done += 1
+            tasks.append(task.get('title'))
 
     print('Employee {} is done with tasks({}/{}):'.format(
                                                    e_name,
-                                                   len(tasks),
-                                                   len(data)
+                                                   tasks_done,
+                                                   total_tasks
                                                    ))
     for task in tasks:
-        print("\t{}".format(task.get("title")))
+        print("\t " + task)

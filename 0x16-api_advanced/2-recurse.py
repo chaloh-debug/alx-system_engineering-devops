@@ -9,8 +9,8 @@ def recurse(subreddit, hot_list=[], after=""):
     """
     recursive query of titles of all hot articles
     """
-    url = "https://www.reddit.com/r/{}/hot.json?after={}".
-    format(subreddit, after)
+    url = "https://www.reddit.com/r/{}/hot.json?after={}".format(
+        subreddit, after)
     headers = {
         "User-Agent": "query"
     }

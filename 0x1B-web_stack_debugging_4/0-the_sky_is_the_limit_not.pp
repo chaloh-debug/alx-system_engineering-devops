@@ -1,5 +1,5 @@
 # fix too many requests in nginx server
-# traffic amount fix
+
 exec {'fix-default-limit':
   command => "sed -i 's/ULIMIT=\"-n 15\"/ULIMIT=\"-n 4096\"/g' /etc/default/nginx",
   provider => shell
